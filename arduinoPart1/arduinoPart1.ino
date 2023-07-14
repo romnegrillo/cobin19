@@ -1,7 +1,7 @@
 /*
   Notes:
   - Power the servo on a separate 5V power supply, not the 5V output on Arduino.
-  - Then just put a common Gnd on each. 
+  - Then just put a common Gnd on each.
   - The signal pin of the servo can use any digital pins.
 */
 
@@ -24,25 +24,34 @@ void setup() {
 void loop() {
   if (Serial.available()) {
     String command = Serial.readStringUntil('\n');
+    Serial.println("Received command: " + command);
 
     if (command == "infectiousWaste") {
       // Tilt servo1 left. Adjust the angle as per your servo setup.
-      servo1.write(30);   
+      Serial.println("Tilt servo 1 left");
+      servo1.write(30);
 
     } else if (command == "plasticWaste") {
       // Tilt servo1 right. Adjust the angle as per your servo setup.
-      servo1.write(150);   
+      Serial.println("Tilt servo 1 right");
+      servo1.write(150);
 
     } else if (command == "paperWaste") {
-      // Turn servo2 left. Adjust the angle as per your servo setup.
-      servo2.write(30);   
+      // Turn servo2 forwards. Adjust the angle as per your servo setup.
+      servo2.write(30);
+      Serial.println("Tilt servo 2 forwards");
     }
 
-    // Wait for 3 seconds.
+    // Add delay in secnding for serial buffer.
+    delay(1000);
+
+    // Add another delay to wait for the tilting.
+    Serial.println("Waiting for tilt to finish...");
     delay(3000);
 
     // Send back confirmation message.
     Serial.println("tiltDone");
-    /
+
+
   }
 }

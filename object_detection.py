@@ -12,7 +12,9 @@ class ObjectDetection:
         Construct the object detection class.
 
         It just needs the path for
-        config, weights and the classes labels.
+        config, weights then the actual classes labels in a list arranged
+        the same was as it was trained.
+
         """
 
         # YOLO paths.
@@ -48,7 +50,6 @@ class ObjectDetection:
         _, self.frame = self.capture.read()
         image = self.frame.copy()
         image = imutils.resize(image, width=640, height=480)
-        image = self.apply_filter(image)
         # image = cv2.flip(image, 1)
 
         return image
