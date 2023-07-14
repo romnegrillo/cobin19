@@ -12,8 +12,8 @@
 
 // Assuming 5 led strip per level so 5*3*3 = 45.
 #define NUMPIXELS 45
-#define DATAPIN 4
-#define CLOCKPIN 5
+#define DATAPIN 6
+#define CLOCKPIN 7
 
 const int trigPin1 = 9, echoPin1 = 10;
 const int trigPin2 = 11, echoPin2 = 12;
@@ -82,17 +82,39 @@ String calculateLevel(float distance, int fullDistance) {
 }
 
 void updateStrandColor(String level, int startPixel) {
-  uint32_t color;
-  if (level == "Low") {
-    color = strip.Color(0, 255, 0);  // Green
-  } else if (level == "Medium") {
-    color = strip.Color(255, 255, 0);  // Yellow
-  } else {
-    color = strip.Color(255, 0, 0);  // Red
-  }
-
   for (int i = startPixel; i < startPixel + 15; i++) {
+    uint32_t color;
+    if (i < startPixel + 5) {
+      color = strip.Color(0, 255, 0);  // Green
+    } else if (i < startPixel + 10) {
+      color = strip.Color(255, 255, 0);  // Yellow
+    } else {
+      color = strip.Color(255, 0, 0);  // Red
+    }
+    
+    if(level == "Low" && color == strip.Color(255, 0, 0)) {
+      color = strip.Color(0, 0, 0); // Turn off red if level is Low
+    } 
+    else if(level == "Medium" && color == strip.Color(255, 0, 0)) {
+      color = strip.Color(0, 0, 0); // Turn off red if level is Medium
+    }
     strip.setPixelColor(i, color);
   }
   strip.show();
 }
+
+// void updateStrandColor(String level, int startPixel) {
+//   uint32_t color;
+//   if (level == "Low") {
+//     color = strip.Color(0, 255, 0);  // Green
+//   } else if (level == "Medium") {
+//     color = strip.Color(255, 255, 0);  // Yellow
+//   } else {
+//     color = strip.Color(255, 0, 0);  // Red
+//   }
+
+//   for (int i = startPixel; i < startPixel + 15; i++) {
+//     strip.setPixelColor(i, color);
+//   }
+//   strip.show();
+// }
