@@ -29,7 +29,7 @@ if not cap.isOpened():
 
 
 # Create a serial object.
-ser = serial.Serial("COM4", 9600)
+ser = serial.Serial("/dev/ttyAMA0", 9600)
 
 # Allow some time for the Arduino to reset.
 time.sleep(2)
