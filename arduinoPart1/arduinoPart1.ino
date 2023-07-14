@@ -42,13 +42,17 @@ void loop() {
       Serial.println("Tilt servo 2 forwards");
     }
 
-    // Add delay in secnding for serial buffer.
+    // Add delay in sending for serial buffer.
     delay(1000);
 
     // Add another delay to wait for the tilting.
     Serial.println("Waiting for tilt to finish...");
     delay(3000);
 
+    // Turn servos to default position.
+    servo1.write(0);
+    servo2.write(0);
+    
     // Send back confirmation message.
     Serial.println("tiltDone");
 
