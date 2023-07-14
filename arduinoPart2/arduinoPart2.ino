@@ -16,14 +16,14 @@
 #define CLOCKPIN 7
 
 const int trigPin1 = 9, echoPin1 = 10;
-const int trigPin2 = 11, echoPin2 = 12;
-const int trigPin3 = 13, echoPin3 = A0;
+const int trigPin2 = 12, echoPin2 = 13;
+const int trigPin3 = 3, echoPin3 = 4;
 
 Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
 
-int fullDistance1 = 30;
-int fullDistance2 = 30;
-int fullDistance3 = 30;
+int fullDistance1 = 50;
+int fullDistance2 = 50;
+int fullDistance3 = 50;
 
 void setup() {
   Serial.begin(9600);
@@ -73,48 +73,55 @@ float calculateDistance(int trigPin, int echoPin) {
 
 String calculateLevel(float distance, int fullDistance) {
   if (distance < fullDistance / 3) {
-    return "Low";
+    return "Full";
   } else if (distance < (2 * fullDistance) / 3) {
     return "Medium";
   } else {
-    return "Full";
+    return "Low";
   }
 }
 
 void updateStrandColor(String level, int startPixel) {
-  for (int i = startPixel; i < startPixel + 15; i++) {
-    uint32_t color;
-    if (i < startPixel + 5) {
-      color = strip.Color(0, 255, 0);  // Green
-    } else if (i < startPixel + 10) {
-      color = strip.Color(255, 255, 0);  // Yellow
-    } else {
-      color = strip.Color(255, 0, 0);  // Red
+  if (level == "Low") {
+    for (int i = startPixel; i < startPixel + 15; i++) {
+      uint32_t color;
+      if (i < startPixel + 5) {
+        color = strip.Color(255, 0, 0);  // Green
+      } else if (i < startPixel + 10) {
+        color = strip.Color(0, 0, 0);  // Off
+      } else {
+        color = strip.Color(0, 0, 0);  // Off
+      }
+
+       strip.setPixelColor(i, color);
     }
-    
-    if(level == "Low" && color == strip.Color(255, 0, 0)) {
-      color = strip.Color(0, 0, 0); // Turn off red if level is Low
-    } 
-    else if(level == "Medium" && color == strip.Color(255, 0, 0)) {
-      color = strip.Color(0, 0, 0); // Turn off red if level is Medium
+  } else if (level == "Medium") {
+    for (int i = startPixel; i < startPixel + 15; i++) {
+      uint32_t color;
+      if (i < startPixel + 5) {
+        color = strip.Color(0, 0, 0);  // Off
+      } else if (i < startPixel + 10) {
+        color = strip.Color(255, 255, 0);  // Yellow
+      } else {
+        color = strip.Color(0, 0, 0);  // Off
+      }
+
+       strip.setPixelColor(i, color);
     }
-    strip.setPixelColor(i, color);
+  } else {
+    for (int i = startPixel; i < startPixel + 15; i++) {
+      uint32_t color;
+      if (i < startPixel + 5) {
+        color = strip.Color(0, 0, 0);  // Off
+      } else if (i < startPixel + 10) {
+        color = strip.Color(0, 0, 0);  // Off
+      } else {
+        color = strip.Color(0, 255, 0);  // Red
+      }
+
+      strip.setPixelColor(i, color);
+    }
   }
+
   strip.show();
 }
-
-// void updateStrandColor(String level, int startPixel) {
-//   uint32_t color;
-//   if (level == "Low") {
-//     color = strip.Color(0, 255, 0);  // Green
-//   } else if (level == "Medium") {
-//     color = strip.Color(255, 255, 0);  // Yellow
-//   } else {
-//     color = strip.Color(255, 0, 0);  // Red
-//   }
-
-//   for (int i = startPixel; i < startPixel + 15; i++) {
-//     strip.setPixelColor(i, color);
-//   }
-//   strip.show();
-// }
