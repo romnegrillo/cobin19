@@ -21,9 +21,13 @@ const int trigPin3 = 3, echoPin3 = 4;
 
 Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
 
-int fullDistance1 = 50;
-int fullDistance2 = 50;
-int fullDistance3 = 50;
+int fullDistance1 = 60;
+int fullDistance2 = 60;
+int fullDistance3 = 60;
+
+int fullbin = 40;
+int mediumbin = 45;
+int emptybin = 50;
 
 void setup() {
   Serial.begin(9600);
@@ -72,9 +76,9 @@ float calculateDistance(int trigPin, int echoPin) {
 }
 
 String calculateLevel(float distance, int fullDistance) {
-  if (distance < fullDistance / 3) {
+  if (distance < fullbin) {
     return "Full";
-  } else if (distance < (2 * fullDistance) / 3) {
+  } else if (distance < mediumbin) {
     return "Medium";
   } else {
     return "Low";
