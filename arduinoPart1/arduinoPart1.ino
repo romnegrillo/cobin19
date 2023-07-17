@@ -14,9 +14,17 @@ const int servoPin2 = 10;
 Servo servo1;
 Servo servo2;
 
+void resetServoPositions() {
+  servo1.write(0);
+  servo2.write(0);
+}
+
 void setup() {
   servo1.attach(servoPin1);  // attaches the servo on pin 9
   servo2.attach(servoPin2);  // attaches the servo on pin 10
+
+  // Turn back servo to default position.
+  resetServoPositions();
 
   Serial.begin(9600);
 }
@@ -50,9 +58,8 @@ void loop() {
     delay(3000);
 
     // Turn servos to default position.
-    servo1.write(0);
-    servo2.write(0);
-    
+    resetServoPositions();
+
     // Send back confirmation message.
     Serial.println("tiltDone");
 

@@ -11,7 +11,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 # YOLO paths.
 config_path = os.path.join(dir_path, "./yolov4-tiny-custom.cfg")
 weights_path = os.path.join(dir_path, "./training/yolov4-tiny-custom_best.weights")
-classes = ["Bottle", "Facemask", "Fork", "Gloves", "Paper", "Spoon"]
+classes = ["Bottle", "Facemask", "Fork", "Glove", "Paper", "Spoon"]
 
 # YOLO objects.
 yolo = cv2.dnn.readNet(weights_path, config_path)
