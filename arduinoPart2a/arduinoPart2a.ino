@@ -67,9 +67,9 @@ void binLevelStatusListener() {
   String level2 = calculateLevel(distance2, fullDistance2);
   String level3 = calculateLevel(distance3, fullDistance3);
 
-  //  Serial.println("Sensor 1 Level: " + level1);
-  //  Serial.println("Sensor 2 Level: " + level2);
-  //  Serial.println("Sensor 3 Level: " + level3);
+    Serial.println("Sensor 1 Level: " + level1);
+    Serial.println("Sensor 2 Level: " + level2);
+    Serial.println("Sensor 3 Level: " + level3);
 
   // Update strand colors based on the level.
   updateStrandColor(level1, 0);

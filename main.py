@@ -21,7 +21,7 @@ layer_names = yolo.getLayerNames()
 output_layers = [layer_names[i - 1] for i in yolo.getUnconnectedOutLayers()]
 
 # OpenCV camera loop.
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 if not cap.isOpened():
     print("Cannot open camera")
@@ -29,7 +29,7 @@ if not cap.isOpened():
 
 
 # Create a serial object.
-ser = serial.Serial("/dev/ttyAMA0", 9600)
+# ser = serial.Serial("/dev/ttyAMA0", 9600)
 
 # Allow some time for the Arduino to reset.
 time.sleep(2)
@@ -80,17 +80,17 @@ while True:
 
     # Wait for the Arduino to finish and send a response
     # only if it is currenly in tilt.
-    if ser.inWaiting() and not isDoneTilting:
-        response = ser.readline().decode().strip()
-        print(f"Received response: {response}")
+    # if ser.inWaiting() and not isDoneTilting:
+    #     response = ser.readline().decode().strip()
+    #     print(f"Received response: {response}")
 
-        if response == "tiltDone":
-            print("Done tilting.")
-            isDoneTilting = True
+    #     if response == "tiltDone":
+    #         print("Done tilting.")
+    #         isDoneTilting = True
 
-    # Only try to detect if it is done tilting.
-    if not isDoneTilting:
-        continue
+    # # Only try to detect if it is done tilting.
+    # if not isDoneTilting:
+    #     continue
 
     for index, _ in enumerate(boxes):
         if index in indices:
@@ -99,9 +99,9 @@ while True:
             label = str(classes[class_ids[index]])
             confidence = round(confidences[index], 2)
 
-            # Only include items passing 0.70 confidence level.
-            if confidence < 0.70:
-                continue
+            # # Only include items passing 0.70 confidence level.
+            # if confidence < 0.70:
+            #     continue
 
             if label == classes[0]:  # Bottle
                 mask_color = (0, 0, 255)
@@ -118,7 +118,7 @@ while True:
 
             if label in ["Bottle", "Spoon", "Fork"]:
                 category = "plasticWaste"
-            elif label in ["Facemask", "Gloves"]:
+            elif label in ["Facemask", "Glove"]:
                 category = "infectiousWaste"
             else:
                 category = "paperWaste"
@@ -144,13 +144,13 @@ while True:
     cv2.imshow("frame", frame)
 
     # Send category if only one image is present
-    # and it is done tilting.
-    if num_images == 1 and isDoneTilting:
-        ser.write(category.encode())
-        print(f"Sent command: {category}")
+    # # and it is done tilting.
+    # if num_images == 1 and isDoneTilting:
+    #     ser.write(category.encode())
+    #     print(f"Sent command: {category}")
 
-        isDoneTilting = False
-        print("Started tilting. Please wait.")
+    #     isDoneTilting = False
+    #     print("Started tilting. Please wait.")
 
     if cv2.waitKey(1) == ord("q"):
         break
@@ -159,4 +159,4 @@ while True:
 cap.release()
 
 # Close the serial connection.
-ser.close()
+# ser.close()
