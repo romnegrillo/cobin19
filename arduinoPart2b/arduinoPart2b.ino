@@ -39,7 +39,7 @@ void motorSequence1() {
 
   motor1.run(BACKWARD);
   delay(MOTOR_BACKWARD_DELAY);
-  
+
   sendMotorSequenceDoneCommand();
 }
 
@@ -54,7 +54,7 @@ void motorSequence2() {
 
   motor2.run(BACKWARD);
   delay(MOTOR_BACKWARD_DELAY);
-  
+
   sendMotorSequenceDoneCommand();
 }
 
