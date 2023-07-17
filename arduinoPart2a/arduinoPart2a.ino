@@ -67,9 +67,15 @@ void binLevelStatusListener() {
   String level2 = calculateLevel(distance2, fullDistance2);
   String level3 = calculateLevel(distance3, fullDistance3);
 
-    Serial.println("Sensor 1 Level: " + level1);
-    Serial.println("Sensor 2 Level: " + level2);
-    Serial.println("Sensor 3 Level: " + level3);
+  Serial.println("Distance 1: " + String(distance1));
+  Serial.println("Distance 2: " + String(distance2));
+  Serial.println("Distance 3: " + String(distance3));
+  Serial.println();
+
+  Serial.println("Sensor 1 Level: " + level1);
+  Serial.println("Sensor 2 Level: " + level2);
+  Serial.println("Sensor 3 Level: " + level3);
+  Serial.println();
 
   // Update strand colors based on the level.
   updateStrandColor(level1, 0);
@@ -84,8 +90,8 @@ void buttonSealListener() {
   bool buttonStatus3 = !digitalRead(buttonPin3);
 
   // For testing, remove this later.
-  delay(5000);
-  buttonStatus1 = true;
+  //  delay(5000);
+  //  buttonStatus1 = true;
 
   if (buttonStatus1) {
     // Send command to Arduino 2 to seal bin 1
@@ -155,12 +161,13 @@ void updateStrandColor(String level, int startPixel) {
   if (level == "Low") {
     for (int i = startPixel; i < startPixel + 15; i++) {
       uint32_t color;
+
       if (i < startPixel + 5) {
-        color = strip.Color(255, 0, 0);  // Green
+        color = strip.Color(0, 0, 0);  // Off
       } else if (i < startPixel + 10) {
         color = strip.Color(0, 0, 0);  // Off
       } else {
-        color = strip.Color(0, 0, 0);  // Off
+        color = strip.Color(255, 0, 0);  // Green
       }
 
       strip.setPixelColor(i, color);
@@ -173,7 +180,7 @@ void updateStrandColor(String level, int startPixel) {
       } else if (i < startPixel + 10) {
         color = strip.Color(255, 255, 0);  // Yellow
       } else {
-        color = strip.Color(0, 0, 0);  // Off
+        color = strip.Color(255, 255, 0);  // Yellow
       }
 
       strip.setPixelColor(i, color);
@@ -181,14 +188,14 @@ void updateStrandColor(String level, int startPixel) {
   } else {
     for (int i = startPixel; i < startPixel + 15; i++) {
       uint32_t color;
+
       if (i < startPixel + 5) {
-        color = strip.Color(0, 0, 0);  // Off
+        color = strip.Color(0, 255, 0);  // Red
       } else if (i < startPixel + 10) {
-        color = strip.Color(0, 0, 0);  // Off
+        color = strip.Color(0, 255, 0);  // Red
       } else {
         color = strip.Color(0, 255, 0);  // Red
       }
-
       strip.setPixelColor(i, color);
     }
   }
