@@ -67,9 +67,9 @@ void binLevelStatusListener() {
   String level2 = calculateLevel(distance2, fullDistance2);
   String level3 = calculateLevel(distance3, fullDistance3);
 
-//  Serial.println("Sensor 1 Level: " + level1);
-//  Serial.println("Sensor 2 Level: " + level2);
-//  Serial.println("Sensor 3 Level: " + level3);
+  //  Serial.println("Sensor 1 Level: " + level1);
+  //  Serial.println("Sensor 2 Level: " + level2);
+  //  Serial.println("Sensor 3 Level: " + level3);
 
   // Update strand colors based on the level.
   updateStrandColor(level1, 0);
@@ -84,21 +84,47 @@ void buttonSealListener() {
   bool buttonStatus3 = !digitalRead(buttonPin3);
 
   // For testing, remove this later.
+  delay(5000);
   buttonStatus1 = true;
 
   if (buttonStatus1) {
-    // Send command to Arduino 2 to seal bin 1.
-    Serial.println("button1Clicked");
+    // Send command to Arduino 2 to seal bin 1
+    // and wait for it to finish.
+    sendAndWaitMotorSequence("button1Clicked");
   }
 
   else if (buttonStatus2) {
     // Send command to Arduino 2 to seal bin 2.
-    Serial.println("button2Clicked");
+    sendAndWaitMotorSequence("button2Clicked");
   }
 
   else if (buttonStatus3) {
     // Send command to Arduino 2 to seal bin 3.
-    Serial.println("button3Clicked");
+    sendAndWaitMotorSequence("button3Clicked");
+  }
+}
+
+void sendAndWaitMotorSequence(String command) {
+  // Send the actual string command.
+  Serial.println(command);
+
+  //Wait for Arduino 2 to send "doneMotorSequence" command
+  //and break out of the loop.
+  while (true) {
+    Serial.println("Waiting for Arduino 2 to send doneMotorSequence command...");
+
+    if (Serial.available()) {
+      String receivedString = Serial.readStringUntil('\n');
+      receivedString.trim();
+
+      Serial.println(receivedString);
+
+      if (receivedString == "doneMotorSequence") {
+        break;
+      }
+    }
+
+    delay(3000);
   }
 }
 
