@@ -2,3 +2,5 @@ __pycache__/
 darknet/
 obj/
 objv2/
+captured_images/
+sample_outputs/
