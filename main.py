@@ -21,7 +21,7 @@ layer_names = yolo.getLayerNames()
 output_layers = [layer_names[i - 1] for i in yolo.getUnconnectedOutLayers()]
 
 # OpenCV camera loop.
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 if not cap.isOpened():
     print("Cannot open camera")
@@ -30,7 +30,7 @@ if not cap.isOpened():
 
 # Create a serial object.
 # ser = serial.Serial("/dev/ttyAMA0", 9600)
-ser = serial.Serial("COM8", 9600)
+ser = serial.Serial("COM5", 9600)
 
 # Allow some time for the Arduino to reset.
 time.sleep(2)
@@ -42,7 +42,6 @@ while True:
     ret, frame = cap.read()
 
     # Replace by an image for testing.
-    frame = cv2.imread("./objv3/Facemask (1).jpg")
 
     if not ret:
         print("Can't receive frame (stream end?). Exiting ...")
@@ -153,7 +152,7 @@ while True:
         isDoneTilting = False
         print("Started tilting. Please wait.")
 
-    if cv2.waitKey(1) == ord("q"):
+    if cv2.waitKey(2000) == ord("q"):
         break
 
 # When everything done, release the capture

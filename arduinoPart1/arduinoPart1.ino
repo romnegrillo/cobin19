@@ -34,7 +34,7 @@ void loop() {
     if (command == "infectiousWaste") {
       // Tilt servo1 left. Adjust the angle as per your servo setup.
       Serial.println("Tilt servo 1 left");
-      for (int i = 90; i >= 60 ; i--) {
+      for (int i = 90; i >= 50 ; i--) {
         myServo1.write(i);
         delay(20);
       }
@@ -68,7 +68,7 @@ void loop() {
       delay(3000);
 
       if (wasteType == 1) {
-        for (int i = 60; i <= 90; i++) {
+        for (int i = 50; i <= 90; i++) {
           myServo1.write(i);
           delay(20);
         }
