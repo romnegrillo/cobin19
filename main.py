@@ -30,6 +30,7 @@ if not cap.isOpened():
 
 # Create a serial object.
 # ser = serial.Serial("/dev/ttyAMA0", 9600)
+ser = serial.Serial("COM5", 9600)
 
 # Allow some time for the Arduino to reset.
 time.sleep(2)
@@ -41,7 +42,7 @@ while True:
     ret, frame = cap.read()
 
     # Replace by an image for testing.
-    # frame = cv2.imread("./sample_images/bottle.jpg")
+    frame = cv2.imread("./objv2/Bottle (1).jpg")
 
     if not ret:
         print("Can't receive frame (stream end?). Exiting ...")
@@ -80,17 +81,17 @@ while True:
 
     # Wait for the Arduino to finish and send a response
     # only if it is currenly in tilt.
-    # if ser.inWaiting() and not isDoneTilting:
-    #     response = ser.readline().decode().strip()
-    #     print(f"Received response: {response}")
+    if ser.inWaiting() and not isDoneTilting:
+        response = ser.readline().decode().strip()
+        print(f"Received response: {response}")
 
-    #     if response == "tiltDone":
-    #         print("Done tilting.")
-    #         isDoneTilting = True
+        if response == "tiltDone":
+            print("Done tilting.")
+            isDoneTilting = True
 
-    # # Only try to detect if it is done tilting.
-    # if not isDoneTilting:
-    #     continue
+    # Only try to detect if it is done tilting.
+    if not isDoneTilting:
+        continue
 
     for index, _ in enumerate(boxes):
         if index in indices:
@@ -144,13 +145,13 @@ while True:
     cv2.imshow("frame", frame)
 
     # Send category if only one image is present
-    # # and it is done tilting.
-    # if num_images == 1 and isDoneTilting:
-    #     ser.write(category.encode())
-    #     print(f"Sent command: {category}")
+    # and it is done tilting.
+    if num_images == 1 and isDoneTilting:
+        ser.write(category.encode())
+        print(f"Sent command: {category}")
 
-    #     isDoneTilting = False
-    #     print("Started tilting. Please wait.")
+        isDoneTilting = False
+        print("Started tilting. Please wait.")
 
     if cv2.waitKey(1) == ord("q"):
         break
