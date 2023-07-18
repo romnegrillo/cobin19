@@ -2,7 +2,7 @@ import os
 import cv2
 import numpy as np
 
-TARGET_INPUT_PATH = "objv2"
+TARGET_INPUT_PATH = "objv3"
 TARGET_OUTPUT_PATH = "sample_outputs"
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -98,7 +98,7 @@ for image in images:
                 f"{label} - {confidence}",
                 (x, y - 10),
                 cv2.FONT_HERSHEY_PLAIN,
-                2,
+                1,
                 (0, 0, 0),
                 1,
             )

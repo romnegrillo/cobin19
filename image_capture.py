@@ -29,7 +29,7 @@ while True:
     cv2.imshow("Capture", frame)
 
     if cv2.waitKey(1) & 0xFF == ord("\r"):  # Enter key
-        filename = get_next_filename("./captured_images", prefix="Bottle")
+        filename = get_next_filename("./captured_images", prefix="Facemask")
         print(filename)
         cv2.imwrite(filename, frame)
         print(f"Saved image: {filename}")
