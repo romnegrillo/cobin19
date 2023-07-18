@@ -2,9 +2,9 @@
 #include <SPI.h>
 
 // Button pins.
-const int buttonPin1 = A0;
-const int buttonPin2 = A1;
-const int buttonPin3 = A2;
+const int buttonPin1 = A2;
+const int buttonPin2 = A0;
+const int buttonPin3 = A1;
 
 // Assuming 5 led strip per level so 5*3*3 = 45.
 #define NUMPIXELS 45
@@ -19,13 +19,13 @@ const int trigPin3 = 3, echoPin3 = 4;
 // LED strip controller.
 Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
 
-int fullDistance1 = 60;
-int fullDistance2 = 60;
-int fullDistance3 = 60;
+int fullDistance1 = 40;
+int fullDistance2 = 40;
+int fullDistance3 = 40;
 
-int fullbin = 40;
-int mediumbin = 45;
-int emptybin = 50;
+int fullbin = 20;
+int mediumbin = 30;
+int emptybin = 40;
 
 // Motor sealing delay in ms.
 const int sealingDelay = 5000;
@@ -92,21 +92,28 @@ void buttonSealListener() {
   // For testing, remove this later.
   //  delay(5000);
   //  buttonStatus1 = true;
+  Serial.println("button Listener");
 
   if (buttonStatus1) {
     // Send command to Arduino 2 to seal bin 1
     // and wait for it to finish.
+    Serial.println("button 1 test");
     sendAndWaitMotorSequence("button1Clicked");
   }
 
   else if (buttonStatus2) {
     // Send command to Arduino 2 to seal bin 2.
+    Serial.println("button 2 test");
     sendAndWaitMotorSequence("button2Clicked");
   }
 
   else if (buttonStatus3) {
     // Send command to Arduino 2 to seal bin 3.
+    Serial.println("button 3 test");
     sendAndWaitMotorSequence("button3Clicked");
+  }
+  else {
+    Serial.println("NO BUTTON CLICKED");
   }
 }
 

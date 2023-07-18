@@ -7,23 +7,24 @@ AF_DCMotor motor2(2);
 AF_DCMotor motor3(3);
 
 // Universal forward and backward delay for all motors in ms.
-const int MOTOR_FORWARD_DELAY = 5000;
-const int MOTOR_BACKWARD_DELAY = 5000;
+const int MOTOR_FORWARD_DELAY = 8000;
+const int MOTOR_BACKWARD_DELAY = 8000;
 const int MOTOR_PAUSE_DELAY = 1000;
 
 void setup() {
   Serial.begin(9600);
+  initMotors();
 }
 
 void initMotors() {
   // Set the speed to start, from 0 (off) to 255 (max speed)
-  motor1.setSpeed(150);
+  motor1.setSpeed(255);
   motor1.run(RELEASE);
 
-  motor2.setSpeed(150);
+  motor2.setSpeed(255);
   motor2.run(RELEASE);
 
-  motor3.setSpeed(150);
+  motor3.setSpeed(255);
   motor3.run(RELEASE);
 
 }
@@ -40,6 +41,7 @@ void motorSequence1() {
   motor1.run(BACKWARD);
   delay(MOTOR_BACKWARD_DELAY);
   
+  motor1.run(RELEASE);
   sendMotorSequenceDoneCommand();
 }
 
@@ -55,6 +57,7 @@ void motorSequence2() {
   motor2.run(BACKWARD);
   delay(MOTOR_BACKWARD_DELAY);
   
+  motor2.run(RELEASE);
   sendMotorSequenceDoneCommand();
 }
 
@@ -70,6 +73,7 @@ void motorSequence3() {
   motor3.run(BACKWARD);
   delay(MOTOR_BACKWARD_DELAY);
 
+  motor3.run(RELEASE);
   sendMotorSequenceDoneCommand();
 }
 
