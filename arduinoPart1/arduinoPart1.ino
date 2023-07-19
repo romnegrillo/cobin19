@@ -18,6 +18,18 @@ void setup() {
 
   Serial.begin(9600);
 
+  // Wait for serial command to start the
+  // system so that the servo will stay as is.
+  while (true) {
+    if (Serial.available()) {
+      String command = Serial.readStringUntil('\n');
+
+      if (command == "start") {
+        break;
+      }
+    }
+  }
+
   // Turn back servo to default position.
   resetServoPositions();
 }
