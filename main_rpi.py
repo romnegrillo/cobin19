@@ -42,6 +42,8 @@ categories = []
 detect_counter = 0
 temp_frame = None
 
+ser.write("start".encode())
+
 while True:
     # Capture frame-by-frame.
     ret, frame = cap.read()
@@ -52,14 +54,14 @@ while True:
 
     current_time = time.time()
 
-    if current_time - last_detection_time >= 5:  # Check if 5 seconds have passed
+    
+    if current_time - last_detection_time >= 5: # Check if 5 seconds have passed
+
         last_detection_time = current_time
 
         # Display the resulting frame.
         height, width, _ = frame.shape
-        blob = cv2.dnn.blobFromImage(
-            frame, 1 / 255.0, (416, 416), swapRB=True, crop=False
-        )
+        blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (416, 416), swapRB=True, crop=False)
         yolo.setInput(blob)
         outputs = yolo.forward(output_layers)
 
@@ -93,7 +95,7 @@ while True:
         if ser.inWaiting() and not isDoneTilting:
             response = ser.readline().decode().strip()
             print(f"Received response: {response}")
-
+    
             if response == "tiltDone":
                 print("Done tilting.")
                 isDoneTilting = True
@@ -145,22 +147,24 @@ while True:
                     (0, 0, 0),
                     1,
                 )
+                
 
                 num_images += 1
 
                 # print(f"Category: {category}")
                 # print(f"Confidence level: {confidence}")
                 # print(f"Number of images: {num_images}")
+                
+##            temp_frame = frame.copy()
 
-    ##            temp_frame = frame.copy()
-
-    ##    if temp_frame is None:
-    ##        cv2.imshow("frame", frame)
-    ##    else:
-    ##        cv2.imshow("frame", temp_frame)
+##    if temp_frame is None:
+##        cv2.imshow("frame", frame)
+##    else:
+##        cv2.imshow("frame", temp_frame)
 
     cv2.imshow("frame", frame)
 
+        
     # Remove the duplicates.
     categories = list(set(categories))
 
@@ -169,7 +173,7 @@ while True:
         detect_counter += 1
         print(detect_counter)
 
-        if detect_counter > 3:
+        if detect_counter > 2:
             detect_counter = 0
             ser.write(categories[0].encode())
             print(f"Sent command: {categories[0]}")
@@ -178,11 +182,11 @@ while True:
             print("Started tilting. Please wait.")
     elif len(categories) > 1:
         print("Detected 2 or more categories.")
-        ser.write("invalid".encode())  # Reset detect counter if nothing is detected:
-
+        ser.write("invalid".encode()) # Reset detect counter if nothing is detected:
+    
     if len(categories) > 0:
         time.sleep(2)
-
+   
     if cv2.waitKey(1) == ord("q"):
         break
 
