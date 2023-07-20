@@ -2,8 +2,8 @@
 #include <SPI.h>
 
 // Button pins.
-const int buttonPin1 = A2;
-const int buttonPin2 = A0;
+const int buttonPin1 = A0;
+const int buttonPin2 = A2; 
 const int buttonPin3 = A1;
 
 // Assuming 5 led strip per level so 5*3*3 = 45.
@@ -15,6 +15,11 @@ const int buttonPin3 = A1;
 const int trigPin1 = 9, echoPin1 = 10;
 const int trigPin2 = 12, echoPin2 = 13;
 const int trigPin3 = 3, echoPin3 = 4;
+
+//
+String level1 = "";
+String level2 = "";
+String level3 = "";
 
 // LED strip controller.
 Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
@@ -63,14 +68,14 @@ void binLevelStatusListener() {
   float distance2 = calculateDistance(trigPin2, echoPin2);
   float distance3 = calculateDistance(trigPin3, echoPin3);
 
-  String level1 = calculateLevel(distance1, fullDistance1);
-  String level2 = calculateLevel(distance2, fullDistance2);
-  String level3 = calculateLevel(distance3, fullDistance3);
+  level1 = calculateLevel(distance1, fullDistance1);
+  level2 = calculateLevel(distance2, fullDistance2);
+  level3 = calculateLevel(distance3, fullDistance3);
 
-  Serial.println("Distance 1: " + String(distance1));
-  Serial.println("Distance 2: " + String(distance2));
-  Serial.println("Distance 3: " + String(distance3));
-  Serial.println();
+//  Serial.println("Distance 1: " + String(distance1));
+//  Serial.println("Distance 2: " + String(distance2));
+//  Serial.println("Distance 3: " + String(distance3));
+//  Serial.println();
 
   Serial.println("Sensor 1 Level: " + level1);
   Serial.println("Sensor 2 Level: " + level2);
@@ -89,31 +94,38 @@ void buttonSealListener() {
   bool buttonStatus2 = !digitalRead(buttonPin2);
   bool buttonStatus3 = !digitalRead(buttonPin3);
 
+  Serial.println("Button states :");
+  Serial.println(buttonStatus1) ;
+  Serial.println(buttonStatus2);
+  Serial.println(buttonStatus3);
+  Serial.println();
+
+
   // For testing, remove this later.
   //  delay(5000);
   //  buttonStatus1 = true;
-  Serial.println("button Listener");
+  //Serial.println("button Listener");
 
-  if (buttonStatus1) {
+  if (buttonStatus3 && level3 == "Full" ) {
     // Send command to Arduino 2 to seal bin 1
     // and wait for it to finish.
     Serial.println("button 1 test");
     sendAndWaitMotorSequence("button1Clicked");
   }
 
-  else if (buttonStatus2) {
+  else if (buttonStatus2 && level2 == "Full" ) {
     // Send command to Arduino 2 to seal bin 2.
     Serial.println("button 2 test");
     sendAndWaitMotorSequence("button2Clicked");
   }
 
-  else if (buttonStatus3) {
+  else if (buttonStatus1 && level1 == "Full" ) {
     // Send command to Arduino 2 to seal bin 3.
     Serial.println("button 3 test");
     sendAndWaitMotorSequence("button3Clicked");
   }
   else {
-    Serial.println("NO BUTTON CLICKED");
+    //Serial.println("NO BUTTON CLICKED");
   }
 }
 

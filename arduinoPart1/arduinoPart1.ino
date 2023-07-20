@@ -103,9 +103,18 @@ void loop() {
         }
       }
 
+
+
       // Send back confirmation message.
       Serial.println("tiltDone");
       wasteType = 0;
+
+      for (int i = 0; i < 5; i++) {
+        digitalWrite(buzzPin, HIGH);
+        delay(100);
+        digitalWrite(buzzPin, LOW);
+        delay(100);
+      }
     }
   }
 }
